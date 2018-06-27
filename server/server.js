@@ -1,4 +1,6 @@
 
+require('./config/config');
+
 var express = require('express');
 var bodyParser = require('body-parser');
 const _ = require('lodash');
@@ -47,15 +49,6 @@ app.get('/todos/:id', (req, res) => {
 		res.status(404).send();
 	}
 
-
-	//findById
-		//Success
-			//If todo - send it back
-			//If no Todo - send back 4040 with empty body
-		//Error
-			//400 - send back nothing
-
-
 	Todo.findById(id).then((todo) => {
 		if(!todo) {
 			return res.status(404).send();
@@ -74,17 +67,14 @@ app.delete('/todos/:id', (req, res) => {
 	//get the id
 	var id = req.params.id;
 
-
 	//validate the id -> not valid return 404
 	if (!ObjectID.isValid(id)) {
 		return res.status(404).send();
 	}
-
 	Todo.findByIdAndRemove(id).then((todo) =>{
 		if(!todo){
 			return res.status(404).send();
 		}
-
 		res.send({todo});
 
 	}).catch((e) => {
